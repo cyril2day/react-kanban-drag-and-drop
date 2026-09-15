@@ -1,8 +1,13 @@
+import KanbanBoard from './components/KanbanBoard'
+import ThemeToggle from './components/ThemeToggle'
+
 const App = () => {
   return (
-    <div>
+    <>
       App
-    </div>
+      <KanbanBoard />
+      <ThemeToggle />
+    </>
   )
 }
 
