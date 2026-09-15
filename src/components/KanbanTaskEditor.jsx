@@ -5,7 +5,8 @@ const KanbanTaskEditor = ({
   tempContent,
   setTempContent,
   onSave,
-  onCancel
+  onCancel,
+  textareaRef
 }) => {
 
   const handleKeydown = (e) => {
@@ -16,6 +17,7 @@ const KanbanTaskEditor = ({
   return (
     <div className='space-y-2'>
       <textarea 
+        ref={textareaRef}
         value={tempContent}
         onChange={e => setTempContent(e.target.value)}
         autoFocus

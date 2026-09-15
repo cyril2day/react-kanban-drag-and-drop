@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import KanbanTaskEditor from './KanbanTaskEditor'
 import KanbanTaskViewer from './KanbanTaskViewer'
 
@@ -11,6 +11,19 @@ const KanbanTask = ({
   const [isEditing, setIsEditing] = useState(false)
 
   const [tempContent, setTempContent] = useState(task.content)
+
+  const textareaRef = useRef(null)
+
+  useEffect(() => {
+    if (isEditing && textareaRef.current) {
+      const textarea = textareaRef.current
+      textarea.focus()
+      textarea.setSelectionRange(
+        textarea.value.length, textarea.value.length
+      )
+      textarea.scrollTop = textarea.scrollHeight
+    }
+  }, [isEditing])
 
   const handleSave = () => {
     onUpdate(task.id, tempContent)
@@ -33,6 +46,7 @@ const KanbanTask = ({
               setTempContent={setTempContent}
               onSave={handleSave}
               onCancel={handleCancel}
+              textareaRef={textareaRef}
             />
           : <KanbanTaskViewer 
               content={task.content}
