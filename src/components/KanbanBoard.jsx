@@ -100,7 +100,50 @@ const KanbanBoard = () => {
   }
 
   const handleDragEnd = result => {
+    const { destination, source } = result
 
+    if (!destination) return
+
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) return
+
+    const sourceColumn = columns.find(col => col.id === source.droppableId)
+
+    const destColumn = columns.find(col => col.id === destination.droppableId)
+
+    if (!sourceColumn || !destColumn) return
+
+    const sourceTasks = [...sourceColumn.tasks]
+
+    const [movedTask] = sourceTasks.splice(source.index, 1)
+
+    if (sourceColumn === destColumn) {
+      sourceTasks.splice(destination.index, 0, movedTask)
+
+      setColumns(
+        columns.map(col =>
+          col.id === sourceColumn.id ? {...col, tasks: sourceTasks } : col
+        )
+      )
+    } else {
+      const destTasks = [...destColumn.tasks]
+
+      destTasks.splice(destination.index, 0, movedTask)
+
+      setColumns(
+        columns.map(col => {
+          if (col.id === sourceColumn.id)
+            return { ...col, tasks: sourceTasks }
+
+          if (col.id === destColumn.id)
+            return { ...col, tasks: destTasks }
+
+          return col
+        })
+      )
+    }
   }
 
   return (
