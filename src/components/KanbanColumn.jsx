@@ -86,7 +86,7 @@ const KanbanColumn = ({
               ref={provided.innerRef}
               {...provided.droppableProps}
               className={
-                `p-4 overflow-y-auto flex-1 min-h-0 ${
+                `p-4 overflow-y-auto flex-1 min-h-0 thin-scrollbar ${
                   snapshot.isDraggingOver
                   ? 'bg-blue-50 dark:bg-blue-500'
                   : ''

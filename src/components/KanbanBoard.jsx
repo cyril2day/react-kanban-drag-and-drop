@@ -147,10 +147,10 @@ const KanbanBoard = () => {
   }
 
   return (
-    <div className='w-full min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors'>
+    <div className='w-full min-h-screen flex items-center bg-gray-100 dark:bg-gray-900 transition-colors'>
 
       <DragDropContext onDragEnd={handleDragEnd}>
-        <div className='flex gap-6 overflow-x-auto pb-6 px-6 w-full'>
+        <div className='flex gap-6 overflow-x-auto pb-6 px-6 w-full thin-scrollbar'>
           {columns.map(column => (
             <KanbanColumn
               key={column.id}
