@@ -8,7 +8,8 @@ const KanbanColumn = ({
   onDeleteColumn, 
   onAddTask,
   onUpdateTitle,
-  onUpdateTask
+  onUpdateTask,
+  onDeleteTask
 }) => {
 
   const [isEditingTitle, setIsEditingTitle] = useState(false)
@@ -86,6 +87,7 @@ const KanbanColumn = ({
                 task={task}
                 index={index}
                 onUpdate={onUpdateTask}
+                onDelete={onDeleteTask}
               />
             ))}
           </div>
