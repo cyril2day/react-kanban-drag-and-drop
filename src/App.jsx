@@ -4,7 +4,6 @@ import ThemeToggle from './components/ThemeToggle'
 const App = () => {
   return (
     <>
-      App
       <KanbanBoard />
       <ThemeToggle />
     </>
