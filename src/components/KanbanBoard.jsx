@@ -63,8 +63,8 @@ const KanbanBoard = () => {
       } catch (err) {
         console.error('Failed parsing columns', err.message)
       }
-      return defaultColumns
     }
+    return defaultColumns
   })
 
   useEffect(() => {
