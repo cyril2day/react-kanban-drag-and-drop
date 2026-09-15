@@ -58,6 +58,14 @@ const KanbanBoard = () => {
     setColumns(columns.filter(col => col.id !== columnId))
   }
 
+  const updateColumnTitle = (columnId, newTitle) => {
+    setColumns(
+      columns.map(col =>
+        col.id === columnId ? {...col, title: newTitle} : col
+      )
+    )
+  }
+
   const addTask = (columnId) => {
     const newTask = {
       id: `task-${Date.now()}`,
@@ -79,6 +87,7 @@ const KanbanBoard = () => {
             column={column}
             onDeleteColumn={deleteColumn}
             onAddTask={addTask}
+            onUpdateTitle={updateColumnTitle}
           />
         ))}
 

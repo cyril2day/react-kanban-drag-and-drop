@@ -3,9 +3,31 @@ import KanbanTask from './KanbanTask'
 import Button from './ui/Button'
 import { Trash2, Plus } from 'lucide-react'
 
-const KanbanColumn = ({column, onDeleteColumn, onAddTask}) => {
+const KanbanColumn = ({
+  column, 
+  onDeleteColumn, 
+  onAddTask,
+  onUpdateTitle
+}) => {
 
   const [isEditingTitle, setIsEditingTitle] = useState(false)
+
+  const [tempTitle, setTempTitle] = useState(column.title)
+
+  const handleTitleSave = () => {
+    onUpdateTitle(column.id, tempTitle)
+    setIsEditingTitle(false)
+  }
+
+  const handleTitleCancel = () => {
+    setTempTitle(column.title)
+    setIsEditingTitle(false)
+  }
+
+  const handleKeyPress = e => {
+    if (e.key === 'Enter') handleTitleSave()
+    if (e.key === 'Escape') handleTitleCancel()
+  }
 
   return (
     <div className='flex-shrink-0 w-80'>
@@ -14,8 +36,19 @@ const KanbanColumn = ({column, onDeleteColumn, onAddTask}) => {
           <div className='flex items-center justify-between mb-2'>
             {
               isEditingTitle
-              ? <input type='text' />
-              : <h3 className='text-lg font-semibold text-gray-800 dark:text-white cursor-pointer hover:text-blue-600 dark:hover-text-blue-500 transition-colors'>
+              ? <input 
+                  type='text' 
+                  value={tempTitle}
+                  onChange={e => setTempTitle(e.target.value)}
+                  autoFocus
+                  onBlur={handleTitleSave}
+                  onKeyDown={handleKeyPress}
+                  className='w-full text-lg font-semibold bg-transparent text-gray-800 dark:text-white focus:outline-none'
+                />
+              : <h3 
+                  onClick={() => setIsEditingTitle(true)}
+                  className='text-lg font-semibold text-gray-800 dark:text-white cursor-pointer hover:text-blue-600 dark:hover-text-blue-500 transition-colors'
+                >
                   {column.title}
                 </h3>
             }
