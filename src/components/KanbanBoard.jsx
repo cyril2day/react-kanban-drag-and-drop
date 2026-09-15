@@ -53,13 +53,15 @@ const KanbanBoard = () => {
       try {
         const parsed = JSON.parse(stored)
 
-        return parsed.map(col => ({
-          ...col,
-          tasks: col.tasks.map(task => ({
-            ...task,
-            createdAt: new Date(task.createdAt)
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed.map(col => ({
+            ...col,
+            tasks: col.tasks.map(task => ({
+              ...task,
+              createdAt: new Date(task.createdAt)
+            }))
           }))
-        }))
+        }
       } catch (err) {
         console.error('Failed parsing columns', err.message)
       }
