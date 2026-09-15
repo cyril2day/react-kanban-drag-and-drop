@@ -2,6 +2,7 @@ import { useState } from 'react'
 import KanbanTask from './KanbanTask'
 import Button from './ui/Button'
 import { Trash2, Plus } from 'lucide-react'
+import { Droppable } from '@hello-pangea/dnd'
 
 const KanbanColumn = ({
   column, 
@@ -79,19 +80,33 @@ const KanbanColumn = ({
           </div>
         </div>
 
-        <div className='p-4 overflow-y-auto flex-1 min-h-0'>
-          <div className='space-y-3'>
-            {column.tasks.map((task, index) => (
-              <KanbanTask
-                key={task.id}
-                task={task}
-                index={index}
-                onUpdate={onUpdateTask}
-                onDelete={onDeleteTask}
-              />
-            ))}
-          </div>
-        </div>
+        <Droppable droppableId={column.id}>
+          { (provided, snapshot) => (
+            <div 
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              className={
+                `p-4 overflow-y-auto flex-1 min-h-0 ${
+                  snapshot.isDraggingOver
+                  ? 'bg-blue-50 dark:bg-blue-500'
+                  : ''
+                }`
+              }
+            >
+              <div className='space-y-3'>
+                {column.tasks.map((task, index) => (
+                  <KanbanTask
+                    key={task.id}
+                    task={task}
+                    index={index}
+                    onUpdate={onUpdateTask}
+                    onDelete={onDeleteTask}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </Droppable>
       </div>
     </div>
   )

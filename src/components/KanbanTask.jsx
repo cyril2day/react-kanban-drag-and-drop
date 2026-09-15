@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import KanbanTaskEditor from './KanbanTaskEditor'
 import KanbanTaskViewer from './KanbanTaskViewer'
+import { Draggable } from '@hello-pangea/dnd'
 
 const KanbanTask = ({
   task, 
@@ -37,28 +38,44 @@ const KanbanTask = ({
   }
 
   return (
-    <div className='group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg p-2 shadow-sm hover:shadow-md transition-all duration-200'>
-      <div className='relative'>
-        {
-          isEditing 
-          ? <KanbanTaskEditor
-              taskId={task.id}
-              tempContent={tempContent}
-              setTempContent={setTempContent}
-              onSave={handleSave}
-              onCancel={handleCancel}
-              textareaRef={textareaRef}
-              onDelete={onDelete}
-            />
-          : <KanbanTaskViewer 
-              content={task.content}
-              createdAt={task.createdAt}
-              onEdit={() => setIsEditing(true)}
-              onDelete={() => onDelete(task.id)}
-            />
-        }
-      </div>
-    </div>
+    <Draggable draggableId={task.id} index={index}>
+      { (provided, snapshot) => (
+        <div 
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          className={
+          'group bg-white dark:bg-gray-800 border border-gray-200 ' + 
+          ' dark:border-gray-600 rounded-lg p-2 shadow-sm hover:shadow-md transition-all duration-200' +
+          ` ${
+            snapshot.isDragging
+            ? 'rotate-3 shadow-lg ring-2 ring-blue-300 ring-opacity-50'
+            : ''
+          }`
+        }>
+          <div className='relative'>
+            {
+              isEditing 
+              ? <KanbanTaskEditor
+                  taskId={task.id}
+                  tempContent={tempContent}
+                  setTempContent={setTempContent}
+                  onSave={handleSave}
+                  onCancel={handleCancel}
+                  textareaRef={textareaRef}
+                  onDelete={onDelete}
+                />
+              : <KanbanTaskViewer 
+                  content={task.content}
+                  createdAt={task.createdAt}
+                  onEdit={() => setIsEditing(true)}
+                  onDelete={() => onDelete(task.id)}
+                />
+            }
+          </div>
+        </div>
+      )}
+    </Draggable>
   )
 }
 
