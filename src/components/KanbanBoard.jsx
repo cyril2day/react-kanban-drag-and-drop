@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import KanbanColumn from './KanbanColumn'
 import Button from './ui/Button'
 import { Plus } from 'lucide-react'
@@ -46,7 +46,30 @@ const KanbanBoard = () => {
     },
   ]
 
-  const [columns, setColumns] = useState(defaultColumns)
+  const [columns, setColumns] = useState(() => {
+    const stored = localStorage.getItem('kanban-columns')
+
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored)
+
+        return parsed.map(col => ({
+          ...col,
+          tasks: col.tasks.map(task => ({
+            ...task,
+            createdAt: new Date(task.createdAt)
+          }))
+        }))
+      } catch (err) {
+        console.error('Failed parsing columns', err.message)
+      }
+      return defaultColumns
+    }
+  })
+
+  useEffect(() => {
+    localStorage.setItem('kanban-columns', JSON.stringify(columns))
+  }, [columns])
 
   const addColumn = () => {
     setColumns([
