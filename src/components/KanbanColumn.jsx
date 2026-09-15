@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import KanbanTask from './KanbanTask'
 import Button from './ui/Button'
-import { Trash2 } from 'lucide-react'
+import { Trash2, Plus } from 'lucide-react'
 
-const KanbanColumn = ({column, onDeleteColumn}) => {
+const KanbanColumn = ({column, onDeleteColumn, onAddTask}) => {
 
   const [isEditingTitle, setIsEditingTitle] = useState(false)
 
@@ -25,6 +25,21 @@ const KanbanColumn = ({column, onDeleteColumn}) => {
               onClick={() => onDeleteColumn(column.id)}
             >
               <Trash2 className='h-6 w-6' />
+            </Button>
+          </div>
+
+          <div className='flex items-center justify-between'>
+            <span className='text-sm text-gray-500 dark:text-gray-400'>
+              {column.tasks.length}{' '}
+              {column.tasks.length === 1 ? 'task' : 'tasks'}
+            </span>
+
+            <Button 
+              onClick={() => onAddTask(column.id)}
+              className='h-8 px-2 rounded-md text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:text-blue-500 dark:hover:text-blue-400 dark:hover:bg-blue-500/10'
+            >
+              <Plus className='w-4 h-4 mr-1' />
+              Add
             </Button>
           </div>
         </div>
